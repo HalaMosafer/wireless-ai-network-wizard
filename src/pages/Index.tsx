@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,7 @@ import { WirelessCommunication } from "@/components/scenarios/WirelessCommunicat
 import { OFDMSystem } from "@/components/scenarios/OFDMSystem";
 import { LinkBudget } from "@/components/scenarios/LinkBudget";
 import { CellularDesign } from "@/components/scenarios/CellularDesign";
-import { Radio, Wifi, Signal, Tower } from "lucide-react";
+import { Radio, Wifi, Signal, Power } from "lucide-react";
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState("wireless");
@@ -38,7 +37,7 @@ const Index = () => {
       id: "cellular",
       title: "Cellular System Design",
       description: "Design cellular network based on user-specified parameters",
-      icon: <Tower className="w-6 h-6" />,
+      icon: <Power className="w-6 h-6" />,
       component: <CellularDesign />
     }
   ];

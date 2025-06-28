@@ -33,7 +33,7 @@ export const AIExplanation = ({ scenario, params, results }: AIExplanationProps)
     try {
       const prompt = generatePrompt(scenario, params, results);
       
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-pro:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,11 +52,17 @@ export const AIExplanation = ({ scenario, params, results }: AIExplanationProps)
         }),
       });
 
+      console.log('Response status:', response.status);
+      
       if (!response.ok) {
-        throw new Error('Failed to get AI explanation');
+        const errorData = await response.text();
+        console.error('API Error:', errorData);
+        throw new Error(`API request failed with status ${response.status}: ${errorData}`);
       }
 
       const data = await response.json();
+      console.log('API Response:', data);
+      
       const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text || "No explanation available.";
       setExplanation(aiResponse);
       
@@ -68,7 +74,7 @@ export const AIExplanation = ({ scenario, params, results }: AIExplanationProps)
       console.error('Error getting AI explanation:', error);
       toast({
         title: "Error",
-        description: "Failed to get AI explanation. Please check your API key and try again.",
+        description: error instanceof Error ? error.message : "Failed to get AI explanation. Please check your API key and try again.",
         variant: "destructive"
       });
     } finally {
